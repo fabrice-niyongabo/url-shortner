@@ -44,7 +44,7 @@ function Nav() {
             <li>
               <Link
                 href="register"
-                className="bg-blue-600 py-3 px-5 rounded-md text-sm hover:bg-orange-500"
+                className="bg-blue-600 py-2 px-5 rounded-md text-sm hover:bg-orange-500"
               >
                 Register
               </Link>
