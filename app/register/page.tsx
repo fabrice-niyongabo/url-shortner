@@ -1,15 +1,19 @@
 "use client";
 import Button from "@/components/UI/Button";
 import Input from "@/components/UI/Input";
+import { returnAxiosErrorMesssage, toastMessage } from "@/lib/helpers";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 function Register() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
-    password2: "",
+    confirmPassword: "",
   });
   const handleChange = (e: any) => {
     setForm({
@@ -18,8 +22,28 @@ function Register() {
     });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (form.password.trim() !== form.confirmPassword.trim()) {
+      toastMessage("error", "Passwords do not match");
+      return;
+    }
+    const promise = axios.post("/api/auth/register", {
+      ...form,
+    });
+
+    setIsSubmitting(true);
+    toast.promise(promise, {
+      loading: "Creating your account...",
+      success: (res) => {
+        setIsSubmitting(false);
+        return res.data.message;
+      },
+      error: (error) => {
+        setIsSubmitting(false);
+        return returnAxiosErrorMesssage(error);
+      },
+    });
   };
 
   return (
@@ -47,6 +71,7 @@ function Register() {
                 value={form.email}
                 onChange={handleChange}
                 name="email"
+                disabled={isSubmitting}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -60,6 +85,7 @@ function Register() {
                 value={form.password}
                 onChange={handleChange}
                 name="password"
+                disabled={isSubmitting}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -67,12 +93,13 @@ function Register() {
                 Repeat Password
               </label>
               <Input
-                placeholder="Password"
+                placeholder="Repeat password"
                 type="password"
                 required
-                value={form.password}
+                value={form.confirmPassword}
                 onChange={handleChange}
-                name="password"
+                name="confirmPassword"
+                disabled={isSubmitting}
               />
             </div>
             <Button type="submit" className="rounded-md">
