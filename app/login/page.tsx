@@ -1,24 +1,42 @@
 "use client";
 import Button from "@/components/UI/Button";
 import Input from "@/components/UI/Input";
+import { returnAxiosErrorMesssage } from "@/lib/helpers";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 function Login() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const promise = axios.post("/api/auth/login", form);
+
+    setIsSubmitting(true);
+    toast.promise(promise, {
+      loading: "Logging in...",
+      success: (res) => {
+        setIsSubmitting(false);
+        return res.data.message;
+      },
+      error: (error) => {
+        setIsSubmitting(false);
+        return returnAxiosErrorMesssage(error);
+      },
+    });
   };
 
   return (

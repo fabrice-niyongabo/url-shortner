@@ -5,7 +5,7 @@ import { returnAxiosErrorMesssage, toastMessage } from "@/lib/helpers";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 function Register() {
@@ -15,7 +15,7 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -102,7 +102,12 @@ function Register() {
                 disabled={isSubmitting}
               />
             </div>
-            <Button type="submit" className="rounded-md">
+            <Button
+              type="submit"
+              className="rounded-md"
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
+            >
               Create free account
             </Button>
           </form>
