@@ -1,12 +1,10 @@
-import NextAuth, { CredentialsSignin } from "next-auth";
+export const runtime = "nodejs";
+
+import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "./lib/prisma";
 import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-
-class InvalidLoginError extends CredentialsSignin {
-  code = "Invalid identifier or password";
-}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -22,19 +20,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email: credentials?.email as any },
         });
 
-        if (!user || !user.password) {
-          throw new InvalidLoginError();
-        }
+        if (!user || !user.password) return null;
 
         const isValid = await bcrypt.compare(
           credentials!.password as string,
           user.password
         );
 
-        if (!isValid) {
-          //   throw new Error("Invalid password.");
-          throw new InvalidLoginError();
-        }
+        if (!isValid) return null;
 
         // Return all user fields EXCEPT the password
         const { password, ...userWithoutPassword } = user;
@@ -43,4 +36,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user }) {
+      if (!user) return false;
+      return true;
+    },
+  },
 });

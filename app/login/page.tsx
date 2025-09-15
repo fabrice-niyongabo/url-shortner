@@ -1,8 +1,7 @@
 "use client";
 import Button from "@/components/UI/Button";
 import Input from "@/components/UI/Input";
-import { returnAxiosErrorMesssage } from "@/lib/helpers";
-import axios from "axios";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -21,20 +20,28 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const promise = axios.post("/api/auth/login", form);
-
     setIsSubmitting(true);
+
+    const promise = signIn("credentials", {
+      email: form.email,
+      password: form.password,
+      redirect: false,
+    });
+
     toast.promise(promise, {
       loading: "Logging in...",
       success: (res) => {
         setIsSubmitting(false);
-        return res.data.message;
+        if (res?.error) {
+          throw new Error("Wrong username or password.");
+        }
+        return "Logged in successfully!";
       },
       error: (error) => {
         setIsSubmitting(false);
-        return returnAxiosErrorMesssage(error);
+        return error.message || "Invalid credentials";
       },
     });
   };
@@ -85,7 +92,11 @@ function Login() {
             >
               Forgot your password?
             </Link>
-            <Button type="submit" className="rounded-md">
+            <Button
+              type="submit"
+              className="rounded-md"
+              disabled={isSubmitting}
+            >
               Log in
             </Button>
           </form>
