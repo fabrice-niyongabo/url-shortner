@@ -8,7 +8,7 @@ const apiAuthPrefix = "/api/auth";
 
 export default auth(async (req) => {
   const { nextUrl } = req;
-  const authData = await req.auth;
+  const authData = req.auth;
   const isLoggedIn = !!req.auth;
 
   const path = nextUrl.pathname;

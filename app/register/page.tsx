@@ -1,6 +1,6 @@
 "use client";
-import Button from "@/components/UI/Button";
-import Input from "@/components/UI/Input";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/Input-old";
 import { returnAxiosErrorMesssage, toastMessage } from "@/lib/helpers";
 import axios from "axios";
 import Image from "next/image";

@@ -7,7 +7,7 @@ import prisma from "./lib/prisma";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "jwt", // 🔑 force JWT so middleware can read it
+    strategy: "jwt", // force JWT so middleware can read it
   },
   providers: [
     Credentials({
@@ -29,33 +29,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!isValid) return null;
         // Return all user fields EXCEPT the password
         const { password, ...userWithoutPassword } = user;
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-        };
+        return userWithoutPassword;
       },
     }),
   ],
   callbacks: {
     async session({ session, token }) {
       if (token) {
-        session.user = {
-          id: token.sub as string,
-          email: token.email as string,
-          name: token.name as string,
-          image: "",
-          emailVerified: null,
-        };
+        session.user.id = token.sub as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string;
+        session.user.image = token.picture as string;
+        session.user.role = token.role as any;
       }
       return session;
     },
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
-      }
+      const dbUser = await prisma.user.findFirst({
+        where: {
+          email: user?.email || token.email || "",
+        },
+      });
+
+      if (!dbUser) return token;
+
+      token.id = dbUser.id;
+      token.email = dbUser.email;
+      token.name = dbUser.name;
+      token.picture = dbUser.image;
+      token.role = dbUser.role;
+
       return token;
     },
   },
