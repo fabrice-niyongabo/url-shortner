@@ -1,45 +1,10 @@
-import Link from "next/link";
-import Conatiner from "../container";
 import { auth } from "@/auth";
-import AccountMenu from "./AccountMenu";
-import Links from "./Links";
+import GuestNav from "./guest";
 
 async function Nav() {
   const session = await auth();
-  return (
-    <nav className="bg-[#031F39] text-white py-5">
-      <Conatiner>
-        <div className="flex items-center justify-between gap-4 md:gap-6">
-          <Link href="/" className="text-2xl">
-            URL <span className="text-[#F36500]">Shortener</span>
-          </Link>
-          <Links />
-          {!session?.user ? (
-            <ul className="flex items-center justify-between gap-4 md:gap-6">
-              <li>
-                <Link
-                  href="login"
-                  className="font-bold text-sm hover:text-orange-500"
-                >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="register"
-                  className="bg-blue-600 py-2 px-5 rounded-md text-sm hover:bg-orange-500"
-                >
-                  Register
-                </Link>
-              </li>
-            </ul>
-          ) : (
-            <AccountMenu session={session} />
-          )}
-        </div>
-      </Conatiner>
-    </nav>
-  );
+
+  return <GuestNav session={session} />;
 }
 
 export default Nav;
