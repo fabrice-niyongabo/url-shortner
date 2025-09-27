@@ -1,16 +1,20 @@
 "use client";
-import Button from "@/components/ui/button";
-import Input from "@/components/ui/Input-old";
+
+import CustomButton from "@/components/ui/CustomButton";
+import { Input } from "@/components/ui/input";
 import { returnAxiosErrorMesssage, toastMessage } from "@/lib/helpers";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 function Register() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -37,6 +41,7 @@ function Register() {
       loading: "Creating your account...",
       success: (res) => {
         setIsSubmitting(false);
+        router.push("/login");
         return res.data.message;
       },
       error: (error) => {
@@ -61,10 +66,26 @@ function Register() {
           </p>
           <form className="mt-5 flex flex-col gap-3" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-1">
+              <label htmlFor="name" className="text-xs font-semibold">
+                Name
+              </label>
+              <Input
+                className="focus:!border-orange-500 disabled:bg-gray-100 disabled:text-gray-500"
+                placeholder="Name"
+                type="text"
+                required
+                value={form.name}
+                onChange={handleChange}
+                name="name"
+                disabled={isSubmitting}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
               <label htmlFor="email" className="text-xs font-semibold">
                 Email
               </label>
               <Input
+                className="focus:!border-orange-500 disabled:bg-gray-100 disabled:text-gray-500"
                 placeholder="Email"
                 type="email"
                 required
@@ -79,6 +100,7 @@ function Register() {
                 Password
               </label>
               <Input
+                className="focus:!border-orange-500 disabled:bg-gray-100 disabled:text-gray-500"
                 placeholder="Password"
                 type="password"
                 required
@@ -93,6 +115,7 @@ function Register() {
                 Repeat Password
               </label>
               <Input
+                className="focus:!border-orange-500 disabled:bg-gray-100 disabled:text-gray-500"
                 placeholder="Repeat password"
                 type="password"
                 required
@@ -102,14 +125,14 @@ function Register() {
                 disabled={isSubmitting}
               />
             </div>
-            <Button
+            <CustomButton
               type="submit"
               className="rounded-md"
               isLoading={isSubmitting}
               disabled={isSubmitting}
             >
               Create free account
-            </Button>
+            </CustomButton>
           </form>
         </div>
       </div>

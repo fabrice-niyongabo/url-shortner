@@ -6,11 +6,11 @@ import { getPrismaErrorMessage } from "@/lib/prismaErrorHandler";
 
 export async function POST(request: NextRequest) {
   try {
-    const { password, email } = await request.json();
+    const { password, email, name } = await request.json();
 
-    if (!password || !email) {
+    if (!password || !email || !name) {
       return NextResponse.json(
-        { message: "Please provide email and password" },
+        { message: "Invalid request body" },
         { status: httpStatus.BAD_REQUEST }
       );
     }
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword } as any,
+      data: { email, password: hashedPassword, name } as any,
     });
 
     return NextResponse.json({

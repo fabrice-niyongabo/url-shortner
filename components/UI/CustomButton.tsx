@@ -2,22 +2,27 @@ import { cx, VariantProps } from "class-variance-authority";
 import { Button, buttonVariants } from "./button";
 import { Loader2Icon } from "lucide-react";
 
-function CustomButton(
-  props: React.ComponentProps<"button"> &
-    VariantProps<typeof buttonVariants> & {
-      asChild?: boolean;
-      isLoading?: boolean;
-    }
-) {
+interface CustomButtonProps
+  extends React.ComponentProps<"button">,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  isLoading?: boolean;
+}
+
+function CustomButton({
+  isLoading,
+  children,
+  className,
+  ...props
+}: CustomButtonProps) {
   return (
     <Button
       {...props}
-      className={cx(props.className, [
-        "hover:bg-orange-500 hover:cursor-pointer",
-      ])}
+      className={cx(className, "hover:bg-orange-500 hover:cursor-pointer")}
+      disabled={isLoading}
     >
-      {props.isLoading && <Loader2Icon className="animate-spin" />}
-      {props.children}
+      {isLoading && <Loader2Icon className="animate-spin mr-2" />}
+      {children}
     </Button>
   );
 }

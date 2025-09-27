@@ -5,7 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 interface PageProps {
-  params: { shortCode: string };
+  params: Promise<{ shortCode: string }>;
 }
 
 interface ILocation {
@@ -18,7 +18,7 @@ interface ILocation {
 }
 
 export default async function RedirectPage({ params }: PageProps) {
-  const { shortCode } = params;
+  const { shortCode } = await params;
 
   // headers for getting user agent and ip address
   const headersList = await headers();

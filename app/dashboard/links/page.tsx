@@ -48,7 +48,7 @@ async function Links() {
             key={link.id}
             className="bg-white p-5 rounded-md flex items-start justify-between gap-4"
           >
-            <div className="flext items-center justify-center p-2 border rounded-full">
+            <div className="flex items-center justify-center p-2 border rounded-full">
               {link.icon ? (
                 <Image
                   src={link.icon}

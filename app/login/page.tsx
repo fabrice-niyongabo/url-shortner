@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Input from "@/components/ui/Input-old";
+import CustomButton from "@/components/ui/CustomButton";
+import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -74,6 +75,8 @@ function Login() {
                 value={form.email}
                 onChange={handleChange}
                 name="email"
+                className="focus:!border-orange-500 disabled:bg-gray-100 disabled:text-gray-500"
+                disabled={isSubmitting}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -87,6 +90,8 @@ function Login() {
                 value={form.password}
                 onChange={handleChange}
                 name="password"
+                className="focus:!border-orange-500 disabled:bg-gray-100 disabled:text-gray-500"
+                disabled={isSubmitting}
               />
             </div>
             <Link
@@ -95,13 +100,14 @@ function Login() {
             >
               Forgot your password?
             </Link>
-            <Button
+            <CustomButton
               type="submit"
               className="rounded-md"
               disabled={isSubmitting}
+              isLoading={isSubmitting}
             >
               Log in
-            </Button>
+            </CustomButton>
           </form>
         </div>
       </div>
