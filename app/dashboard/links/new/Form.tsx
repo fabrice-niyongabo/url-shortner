@@ -62,7 +62,7 @@ function Form() {
       loading: "Creating link...",
       success: () => {
         setIsSubmitting(false);
-        router.push("/dashboard");
+        router.push("/dashboard/links");
         return "URL has been shortened successfully!";
       },
       error: (error) => {
@@ -86,7 +86,7 @@ function Form() {
         />
       </div>
       <div className="flex gap-2 flex-col">
-        <p className="text-sm font-medium">Title (Optional)</p>
+        <p className="text-sm font-medium">Title</p>
         <div className="flex items-center justify-between gap-5">
           <Input
             disabled={isLoadingMetadata || isSubmitting}

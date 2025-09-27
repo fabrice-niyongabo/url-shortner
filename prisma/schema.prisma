@@ -91,7 +91,7 @@ model Url {
   userId    String
   shortCode String   @unique
   longUrl   String
-  title     String?
+  title     String
   icon      String?
   clicks    Int      @default(0)
   createdAt DateTime @default(now())

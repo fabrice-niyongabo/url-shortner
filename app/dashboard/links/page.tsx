@@ -1,8 +1,26 @@
 import PageHeader from "@/components/dashboard/PageHeader";
 import { Button } from "@/components/ui/button";
+import { protectedUserRoleSession } from "@/lib/authProtected";
+import prisma from "@/lib/prisma";
+import { Calendar, ChartNoAxesColumn, CopyIcon, Share } from "lucide-react";
+import { headers } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 
-function Links() {
+async function Links() {
+  const session = await protectedUserRoleSession();
+
+  const header = await headers();
+
+  const links = await prisma.url.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
     <div>
       <PageHeader title="Links">
@@ -12,6 +30,77 @@ function Links() {
           </Button>
         </Link>
       </PageHeader>
+      <div className="mt-5 flex flex-col gap-5">
+        {links.map((link) => (
+          <div
+            key={link.id}
+            className="bg-white p-5 rounded-md flex items-start justify-between gap-4"
+          >
+            <div className="flext items-center justify-center p-2 border rounded-full">
+              <Image
+                src={link.icon || ""}
+                alt={link.title || ""}
+                width={35}
+                height={35}
+              />
+            </div>
+            <div className="flex flex-col gap-1 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <a
+                  href={link.longUrl}
+                  className="flex-1 text-xl font-semibold line-clamp-1 hover:underline"
+                  target="_blank"
+                >
+                  {link.title}
+                </a>
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="hover:cursor-pointer hover:bg-amber-600 hover:text-white"
+                  >
+                    <CopyIcon />
+                    Copy
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="hover:cursor-pointer hover:bg-amber-600 hover:text-white"
+                  >
+                    <Share />
+                    Share
+                  </Button>
+                </div>
+              </div>
+              <a
+                href={`/${link.shortCode}`}
+                className="text-blue-700 font-bold"
+              >
+                {`${header.get("host")}/${link.shortCode}`}
+              </a>
+              <a
+                href={link.longUrl}
+                className="text-xs line-clamp-1 hover:underline"
+                target="_blank"
+              >
+                {link.longUrl}
+              </a>
+
+              {/* statistics */}
+              <div className="flex items-center justify-start gap-4 mt-5">
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                  <ChartNoAxesColumn size={16} />
+                  <span>Clicks {link.clicks}</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                  <Calendar size={16} />
+                  <span>{new Date(link.createdAt).toDateString()}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

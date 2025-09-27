@@ -14,7 +14,7 @@ export const protectedUserRoleSession = async (): Promise<Session> => {
   const session = await auth();
   if (!session) return redirect("/login");
 
-  if (session.user.role !== UserRole.ADMIN) return redirect("/dashboard");
+  if (session.user.role !== UserRole.USER) return redirect("/dashboard");
 
   return session;
 };
