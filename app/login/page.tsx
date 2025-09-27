@@ -1,13 +1,15 @@
 "use client";
-import Button from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input-old";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 function Login() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -37,6 +39,7 @@ function Login() {
         if (res?.error) {
           throw new Error("Wrong username or password.");
         }
+        router.push("/dashboard");
         return "Logged in successfully!";
       },
       error: (error) => {

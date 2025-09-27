@@ -8,7 +8,7 @@ const apiAuthPrefix = "/api/auth";
 
 export default auth(async (req) => {
   const { nextUrl } = req;
-  const authData = req.auth;
+  // const authData = req.auth;
   const isLoggedIn = !!req.auth;
 
   const path = nextUrl.pathname;
@@ -18,7 +18,7 @@ export default auth(async (req) => {
 
   const isDashboard = nextUrl.pathname.startsWith("/dashboard");
 
-  console.log({ authData });
+  // console.log({ authData });
 
   if (isApiAuthRoute) {
     return NextResponse.next();

@@ -5,13 +5,13 @@ import AccountMenu from "./AccountMenu";
 import Container from "@/components/container";
 import { Session } from "next-auth";
 import { usePathname } from "next/navigation";
+import { guestRoutes } from "@/lib/constants";
 
 interface IProps {
   session: Session | null;
 }
 function GuestNav({ session }: IProps) {
   const pathname = usePathname();
-  const guestRoutes = ["/", "/login", "/register"];
   return (
     <>
       {guestRoutes.includes(pathname) && (

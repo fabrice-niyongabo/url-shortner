@@ -1,11 +1,12 @@
 "use client";
 
+import { guestRoutes } from "@/lib/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function Links() {
   const pathName = usePathname();
-  return pathName === "/" ? (
+  return guestRoutes.includes(pathName) ? (
     <ul className="flex items-center justify-between gap-4 md:gap-6">
       <li>
         <Link href="#" className="text-sm hover:text-orange-500">
