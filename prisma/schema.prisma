@@ -93,6 +93,13 @@ model Url {
   longUrl   String
   title     String
   icon      String?
-  clicks    Int      @default(0)
+  createdAt DateTime @default(now())
+  Clicks    Clicks[]
+}
+
+model Clicks {
+  id        Int      @id @default(autoincrement())
+  urlId     Int
+  url       Url      @relation(fields: [urlId], references: [id])
   createdAt DateTime @default(now())
 }
