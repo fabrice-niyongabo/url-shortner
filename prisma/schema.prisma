@@ -98,8 +98,12 @@ model Url {
 }
 
 model Clicks {
-  id        Int      @id @default(autoincrement())
-  urlId     Int
-  url       Url      @relation(fields: [urlId], references: [id])
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  urlId        Int
+  url          Url      @relation(fields: [urlId], references: [id])
+  region       String?
+  country      String?
+  country_code String?
+  device       String?
+  createdAt    DateTime @default(now())
 }

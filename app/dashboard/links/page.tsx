@@ -90,7 +90,7 @@ async function Links() {
               </div>
               <a
                 href={`/${link.shortCode}`}
-                className="text-blue-700 font-bold"
+                className="text-blue-700 font-bold hover:underline"
                 target="_blank"
               >
                 {`${header.get("host")}/${link.shortCode}`}
