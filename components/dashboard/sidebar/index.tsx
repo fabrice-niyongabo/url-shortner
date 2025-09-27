@@ -1,6 +1,6 @@
 import SidebarItem from "./SidebarItem";
-import { GalleryHorizontal, Home, Kayak, User2 } from "lucide-react";
-import { ComponentType, ReactNode } from "react";
+import { GalleryHorizontal, Home, Kayak, Link, User2 } from "lucide-react";
+import { ComponentType } from "react";
 
 interface IItem {
   label: string;
@@ -16,9 +16,9 @@ function DashboardSidebar() {
       href: "/dashboard",
     },
     {
-      label: "Profile",
-      icon: User2,
-      href: "/profile",
+      label: "Links",
+      icon: Link,
+      href: "/dashboard/links",
     },
     {
       label: "Settings",
