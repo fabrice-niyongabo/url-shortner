@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { CopyIcon } from "lucide-react";
 import { toastMessage } from "@/lib/helpers";
+import { ClassNameValue, twMerge } from "tailwind-merge";
 
 interface IProps {
   textToCopy: string;
+  className?: ClassNameValue;
 }
 
-function CopyButton({ textToCopy }: IProps) {
+function CopyButton({ textToCopy, className }: IProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -28,7 +30,10 @@ function CopyButton({ textToCopy }: IProps) {
       onClick={handleCopy}
       variant="outline"
       size="sm"
-      className="hover:cursor-pointer hover:bg-amber-600 hover:text-white"
+      className={twMerge(
+        "hover:cursor-pointer hover:bg-amber-600 hover:text-white",
+        className
+      )}
     >
       <CopyIcon />
       {copied ? "Copied!" : "Copy"}

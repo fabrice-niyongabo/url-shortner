@@ -11,25 +11,30 @@ import {
   FacebookShareButton,
   LinkedinIcon,
   LinkedinShareButton,
-  RedditIcon,
-  RedditShareButton,
+  TelegramIcon,
+  TelegramShareButton,
   TwitterIcon,
   TwitterShareButton,
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
+import { ClassNameValue, twMerge } from "tailwind-merge";
 
 interface IProps {
   url: string;
+  buttonClassName?: ClassNameValue;
 }
-function ShareButton({ url }: IProps) {
+function ShareButton({ url, buttonClassName }: IProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           size="sm"
-          className="hover:cursor-pointer hover:bg-amber-600 hover:text-white"
+          className={twMerge(
+            "hover:cursor-pointer hover:bg-amber-600 hover:text-white",
+            buttonClassName
+          )}
         >
           <Share />
           Share
@@ -69,12 +74,12 @@ function ShareButton({ url }: IProps) {
                 <p className="text-xs">Email</p>
               </div>
             </EmailShareButton>
-            <RedditShareButton url={url}>
+            <TelegramShareButton url={url}>
               <div className="flex items-center justify-center gap-1 flex-col">
-                <RedditIcon size={32} round />
-                <p className="text-xs">Reddit</p>
+                <TelegramIcon size={32} round />
+                <p className="text-xs">Telegram</p>
               </div>
-            </RedditShareButton>
+            </TelegramShareButton>
           </div>
         </div>
       </PopoverContent>

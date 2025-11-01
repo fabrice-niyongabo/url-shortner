@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: "Success", data: { url, title, icon } },
+      { message: "Success", urlData: { url, shortCode, title, icon } },
       { status: HttpStatusCode.Ok }
     );
   } catch (err: any) {

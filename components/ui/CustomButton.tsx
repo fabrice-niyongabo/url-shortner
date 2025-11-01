@@ -18,7 +18,10 @@ function CustomButton({
   return (
     <Button
       {...props}
-      className={cx(className, "hover:bg-orange-500 hover:cursor-pointer")}
+      className={cx(className, "hover:bg-orange-500 hover:cursor-pointer", {
+        "opacity-60": props.disabled,
+        "cursor-not-allowed": props.disabled,
+      })}
       disabled={isLoading}
     >
       {isLoading && <Loader2Icon className="animate-spin mr-2" />}
