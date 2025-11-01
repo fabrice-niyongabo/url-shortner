@@ -44,8 +44,8 @@ async function LinkDetails({ params }: PageProps) {
             {url.title}
           </h1>
           <div className="flex items-center justify-center gap-3">
-            <CopyButton textToCopy={url.shortCode} />
-            <ShareButton url={url.shortCode} />
+            <CopyButton textToCopy={`${header.get("host")}/${url.shortCode}`} />
+            <ShareButton url={`${header.get("host")}/${url.shortCode}`} />
             <DeleteButton urlId={url.id} />
           </div>
         </div>
