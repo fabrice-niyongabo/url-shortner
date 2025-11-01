@@ -1,4 +1,5 @@
 import NotFound from "@/components/NotFound";
+import { minifyNumber } from "@/lib/helpers";
 import prisma from "@/lib/prisma";
 
 interface IProps {
@@ -36,14 +37,14 @@ async function Location({ urlId }: IProps) {
               key={item.id}
               className="flex justify-between items-center gap-2 mb-2"
             >
-              <span>{item.country}</span>
-              <div className="flex-1 relative h-[10px] rounded-full bg-gray-400">
+              <p className="w-[80px]">{item.country}</p>
+              <div className="flex-1 relative h-[10px] rounded-full bg-gray-300">
                 <div
                   className="h-full bg-blue-600 transition-all duration-700 rounded-full"
                   style={{ width: `${item.percentage}%` }}
                 ></div>
               </div>
-              <span className="text-right">{item.clicks}</span>
+              <span className="text-right">{minifyNumber(item.clicks)}</span>
               <span className="font-semibold text-right">
                 {item.percentage}%
               </span>

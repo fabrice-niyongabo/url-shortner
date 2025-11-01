@@ -1,5 +1,6 @@
 import CopyButton from "@/components/CopyButton";
 import PageHeader from "@/components/dashboard/PageHeader";
+import NotFound from "@/components/NotFound";
 import ShareButton from "@/components/ShareButton";
 import { Button } from "@/components/ui/button";
 import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
@@ -62,6 +63,7 @@ async function Links({ searchParams }: PageProps) {
         </Link>
       </PageHeader>
       <div className="mt-5 flex flex-col gap-5">
+        {links.length === 0 && <NotFound title="No links found" />}
         {links.map((link) => (
           <div
             key={link.id}
@@ -142,18 +144,20 @@ async function Links({ searchParams }: PageProps) {
         ))}
       </div>
 
-      <div className="py-10">
-        <PaginationWithLinks
-          page={page}
-          pageSize={limit}
-          pageSearchParam="page" // custom page search param
-          totalCount={total}
-          navigationMode="router" // use router.push with loading states
-          pageSizeSelectOptions={{
-            pageSizeOptions: [10, 20, 30],
-          }}
-        />
-      </div>
+      {links.length > 0 && (
+        <div className="py-10">
+          <PaginationWithLinks
+            page={page}
+            pageSize={limit}
+            pageSearchParam="page" // custom page search param
+            totalCount={total}
+            navigationMode="router" // use router.push with loading states
+            pageSizeSelectOptions={{
+              pageSizeOptions: [10, 20, 30],
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
