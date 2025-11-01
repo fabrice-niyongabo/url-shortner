@@ -2,6 +2,7 @@
 
 import AlertConfirmation from "@/components/AlertConfirmation";
 import { Button } from "@/components/ui/button";
+import CustomButton from "@/components/ui/CustomButton";
 import { returnAxiosErrorMesssage } from "@/lib/helpers";
 import axios from "axios";
 import { CircleX } from "lucide-react";
@@ -22,7 +23,7 @@ function DeleteButton({ urlId }: IProps) {
     setLoading(true);
     const promise = axios.delete(`/api/link/remove/${urlId}`);
     toast.promise(promise, {
-      loading: "Logging in...",
+      loading: "Deleting link...",
       success: (res) => {
         setLoading(false);
         router.push("/dashboard/links");
@@ -37,16 +38,18 @@ function DeleteButton({ urlId }: IProps) {
 
   return (
     <>
-      <Button
+      <CustomButton
         onClick={() => setOpen(true)}
         disabled={loading}
+        isLoading={loading}
         variant="outline"
         size="sm"
         className="text-red-600 hover:cursor-pointer hover:bg-red-600 hover:text-white"
       >
         <CircleX />
         {loading ? "Deleting..." : "Delete"}
-      </Button>
+      </CustomButton>
+
       <AlertConfirmation
         description="Do you want to delete this link?"
         open={open}
