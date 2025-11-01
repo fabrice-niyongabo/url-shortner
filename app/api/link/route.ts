@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     const { url, title, icon } = await req.json();
-    if (!url || url.trim() === "" || !title || title.trim() === "") {
+    if (!url || url.trim() === "") {
       return NextResponse.json(
         { message: "Invalid request body" },
         { status: HttpStatusCode.BadRequest }
