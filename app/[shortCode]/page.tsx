@@ -3,6 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { UAParser } from "ua-parser-js";
 
 interface PageProps {
   params: Promise<{ shortCode: string }>;
@@ -20,30 +21,24 @@ interface ILocation {
 export default async function RedirectPage({ params }: PageProps) {
   const { shortCode } = await params;
 
-  // headers for getting user agent and ip address
+  // headers for getting user agent
   const headersList = await headers();
   const userAgent = headersList.get("user-agent") || "";
-  const xForwardedFor = headersList.get("x-forwarded-for"); // IP (if behind proxy)
 
   // Detect device type
-  const isMobile = /mobile|android|touch|webos|iphone|ipad/i.test(userAgent);
-  const isDesktop = !isMobile;
-
-  // IP address
-  const ip = xForwardedFor?.split(",")[0] || "unknown";
+  const parser = new UAParser(userAgent);
+  const deviceType = parser.getDevice().type || "desktop";
 
   // get location using an external API
   let location: ILocation | null = null;
-  if (ip !== "unknown") {
-    try {
-      const res = await fetch(`https://ipapi.co/${ip}/json/`);
-      const data = await res.json();
-      if (!data?.error) {
-        location = data;
-      }
-    } catch (e) {
-      console.error(e);
+  try {
+    const res = await fetch(`https://ipapi.co/json/`);
+    const data = await res.json();
+    if (!data?.error) {
+      location = data;
     }
+  } catch (e) {
+    console.error(e);
   }
 
   const url = await prisma.url.findUnique({
@@ -76,7 +71,7 @@ export default async function RedirectPage({ params }: PageProps) {
       country_code: location?.country_code,
       region: location?.region,
       city: location?.city,
-      device: isMobile ? "mobile" : "desktop",
+      device: deviceType,
     },
   });
 
