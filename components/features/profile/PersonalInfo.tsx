@@ -37,7 +37,7 @@ function PersonalInfo({ session }: IProps) {
   };
   return (
     <div className="bg-white rounded-md p-10 mt-5">
-      <h1>Personal info</h1>
+      <h1 className="text-lg font-semibold mb-2">Personal info</h1>
 
       <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
         <div className="flex gap-2 flex-col">
