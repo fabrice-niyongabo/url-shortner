@@ -33,9 +33,7 @@ export default async function RedirectPage({ params }: PageProps) {
 
   // get location using an external API
   try {
-    const res = await fetch(
-      `https://api.ipapi.com/api/check?access_key=${process.env.IPAPI_ACCESS_KEY}`
-    );
+    const res = await fetch("https://ipapi.co/json");
     const data = await res.json();
     if (!data?.error) {
       location = {
@@ -48,6 +46,25 @@ export default async function RedirectPage({ params }: PageProps) {
     }
   } catch (e) {
     console.error(e);
+  }
+  if (!location) {
+    try {
+      const res = await fetch(
+        `https://api.ipapi.com/api/check?access_key=${process.env.IPAPI_ACCESS_KEY}`
+      );
+      const data = await res.json();
+      if (!data?.error) {
+        location = {
+          ip: data.ip,
+          city: data.city,
+          region: data.region,
+          country_code: data.country_code,
+          country_name: data.country_name,
+        };
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
   // ---- END LOCATION DETECTION ----
 
