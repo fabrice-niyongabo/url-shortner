@@ -9,9 +9,9 @@ export default function Home() {
           Build stronger digital connections
         </h2>
         <p className="text-center text-white text-xl mt-5">
-          Use our URL shortener, QR Codes, and landing pages to engage your
-          audience and connect them to the right information. Build, edit, and
-          track everything inside the Bitly Connections Platform.
+          Use our URL shortener to engage your audience and connect them to the
+          right information. Build, edit, and track everything inside one
+          Platform.
         </p>
         <div className="w-[60%] mx-auto bg-white rounded-4xl p-10 mt-10">
           <h3 className="font-bold text-[#031F39] text-3xl">

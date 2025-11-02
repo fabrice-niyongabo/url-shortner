@@ -73,9 +73,15 @@ export default function AccountMenu({ session }: IProps) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <Link href="/dashboard/profile">
+            <DropdownMenuItem className="cursor-pointer">
+              Profile
+            </DropdownMenuItem>
+          </Link>
           <Link href="/dashboard">
-            <DropdownMenuItem>Dashboard</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Dashboard
+            </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
