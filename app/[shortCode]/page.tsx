@@ -3,10 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import path from "path";
 import { UAParser } from "ua-parser-js";
-import maxmind from "maxmind";
-import fs from "fs";
 
 interface PageProps {
   params: Promise<{ shortCode: string }>;
@@ -18,19 +15,6 @@ interface ILocation {
   region?: string;
   country_code?: string;
   country_name?: string;
-}
-
-async function getClientIp() {
-  const headersList = await headers();
-  const ip =
-    headersList.get("x-forwarded-for")?.split(",")[0].trim() ||
-    headersList.get("x-real-ip") ||
-    headersList.get("cf-connecting-ip") ||
-    headersList.get("x-vercel-forwarded-for") ||
-    null;
-
-  if (!ip || ip === "::1" || ip.startsWith("127.")) return null;
-  return ip;
 }
 
 export default async function RedirectPage({ params }: PageProps) {
@@ -47,42 +31,24 @@ export default async function RedirectPage({ params }: PageProps) {
   // ---- LOCATION DETECTION ----
   let location: ILocation | null = null;
 
-  const ip = await getClientIp();
-  const dbPath = path.join(process.cwd(), "geo-db/GeoLite2-City.mmdb");
-
-  if (ip && fs.existsSync(dbPath)) {
-    const lookup = await maxmind.open(dbPath);
-    const geo: any = lookup.get(ip);
-    if (geo) {
+  // get location using an external API
+  try {
+    const res = await fetch(
+      `https://api.ipapi.com/api/check?access_key=${process.env.IPAPI_ACCESS_KEY}`
+    );
+    const data = await res.json();
+    if (!data?.error) {
       location = {
-        ip,
-        city: geo.city?.names?.en,
-        region: geo.subdivisions?.[0]?.names?.en,
-        country_code: geo.country?.iso_code,
-        country_name: geo.country?.names?.en,
+        ip: data.ip,
+        city: data.city,
+        region: data.region,
+        country_code: data.country_code,
+        country_name: data.country_name,
       };
     }
-  } else {
-    // get location using an external API
-    try {
-      const res = await fetch(
-        `https://api.ipapi.com/api/check?access_key=${process.env.IPAPI_ACCESS_KEY}`
-      );
-      const data = await res.json();
-      if (!data?.error) {
-        location = {
-          ip: data.ip,
-          city: data.city,
-          region: data.region,
-          country_code: data.country_code,
-          country_name: data.country_name,
-        };
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  } catch (e) {
+    console.error(e);
   }
-  console.log({ location });
   // ---- END LOCATION DETECTION ----
 
   const url = await prisma.url.findUnique({
