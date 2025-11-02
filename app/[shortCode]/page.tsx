@@ -3,19 +3,21 @@ import { ChevronLeft } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import path from "path";
 import { UAParser } from "ua-parser-js";
+import maxmind from "maxmind";
+import fs from "fs";
 
 interface PageProps {
   params: Promise<{ shortCode: string }>;
 }
 
 interface ILocation {
-  ip: string;
-  city: string;
-  region: string;
-  country_code: string;
-  country_name: string;
-  currency: string;
+  ip?: string;
+  city?: string;
+  region?: string;
+  country_code?: string;
+  country_name?: string;
 }
 
 async function getClientIp() {
@@ -42,31 +44,46 @@ export default async function RedirectPage({ params }: PageProps) {
   const parser = new UAParser(userAgent);
   const deviceType = parser.getDevice().type || "desktop";
 
-  const ip = await getClientIp();
-
-  // get location using an external API
+  // ---- LOCATION DETECTION ----
   let location: ILocation | null = null;
-  if (ip) {
-    try {
-      const res = await fetch(`https://ipapi.co/${ip}/json/`);
-      const data = await res.json();
-      if (!data?.error) {
-        location = data;
-      }
-    } catch (e) {
-      console.error(e);
+
+  const ip = await getClientIp();
+  const dbPath = path.join(process.cwd(), "geo-db/GeoLite2-City.mmdb");
+
+  if (ip && fs.existsSync(dbPath)) {
+    const lookup = await maxmind.open(dbPath);
+    const geo: any = lookup.get(ip);
+    if (geo) {
+      location = {
+        ip,
+        city: geo.city?.names?.en,
+        region: geo.subdivisions?.[0]?.names?.en,
+        country_code: geo.country?.iso_code,
+        country_name: geo.country?.names?.en,
+      };
     }
   } else {
+    // get location using an external API
     try {
-      const res = await fetch(`https://ipapi.co/json/`);
+      const res = await fetch(
+        `https://api.ipapi.com/api/check?access_key=${process.env.IPAPI_ACCESS_KEY}`
+      );
       const data = await res.json();
       if (!data?.error) {
-        location = data;
+        location = {
+          ip: data.ip,
+          city: data.city,
+          region: data.region,
+          country_code: data.country_code,
+          country_name: data.country_name,
+        };
       }
     } catch (e) {
       console.error(e);
     }
   }
+  console.log({ location });
+  // ---- END LOCATION DETECTION ----
 
   const url = await prisma.url.findUnique({
     where: {
