@@ -18,6 +18,19 @@ interface ILocation {
   currency: string;
 }
 
+async function getClientIp() {
+  const headersList = await headers();
+  const ip =
+    headersList.get("x-forwarded-for")?.split(",")[0].trim() ||
+    headersList.get("x-real-ip") ||
+    headersList.get("cf-connecting-ip") ||
+    headersList.get("x-vercel-forwarded-for") ||
+    null;
+
+  if (!ip || ip === "::1" || ip.startsWith("127.")) return null;
+  return ip;
+}
+
 export default async function RedirectPage({ params }: PageProps) {
   const { shortCode } = await params;
 
@@ -29,16 +42,30 @@ export default async function RedirectPage({ params }: PageProps) {
   const parser = new UAParser(userAgent);
   const deviceType = parser.getDevice().type || "desktop";
 
+  const ip = await getClientIp();
+
   // get location using an external API
   let location: ILocation | null = null;
-  try {
-    const res = await fetch(`https://ipapi.co/json/`);
-    const data = await res.json();
-    if (!data?.error) {
-      location = data;
+  if (ip) {
+    try {
+      const res = await fetch(`https://ipapi.co/${ip}/json/`);
+      const data = await res.json();
+      if (!data?.error) {
+        location = data;
+      }
+    } catch (e) {
+      console.error(e);
     }
-  } catch (e) {
-    console.error(e);
+  } else {
+    try {
+      const res = await fetch(`https://ipapi.co/json/`);
+      const data = await res.json();
+      if (!data?.error) {
+        location = data;
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   const url = await prisma.url.findUnique({
