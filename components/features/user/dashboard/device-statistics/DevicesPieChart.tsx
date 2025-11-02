@@ -14,7 +14,7 @@ interface IProps {
   chartData: IChartData[];
 }
 
-export function DevicesPie({ chartData }: IProps) {
+export function DevicesPieChart({ chartData }: IProps) {
   const chartConfig = chartData.reduce((acc, item, index) => {
     acc[item.device] = {
       label: item.device.toUpperCase(),
@@ -26,7 +26,7 @@ export function DevicesPie({ chartData }: IProps) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[300px]"
+      className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[250px]"
     >
       <PieChart>
         <ChartTooltip content={<ChartTooltipContent nameKey="device" />} />

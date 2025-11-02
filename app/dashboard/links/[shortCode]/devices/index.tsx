@@ -5,7 +5,7 @@ import NotFound from "@/components/NotFound";
 export interface IChartData {
   device: string;
   clicks: number;
-  percentage: string;
+  percentage: number;
   fill: string;
 }
 
@@ -29,7 +29,9 @@ async function Devices({ urlId }: IProps) {
   const chartData: IChartData[] = results.map((r, index) => ({
     device: r.device,
     clicks: Number(r.clicks),
-    percentage: total ? ((Number(r.clicks) / total) * 100).toFixed(1) : "0.0",
+    percentage: total
+      ? Number(((Number(r.clicks) / total) * 100).toFixed(1))
+      : 0,
     fill: `var(--chart-${(index % 5) + 1})`, // automatically assign a chart color
   }));
   return (
