@@ -3,14 +3,14 @@ import { UserRole } from "@prisma/client";
 import { Session } from "next-auth";
 import { redirect } from "next/navigation";
 
-export const protectedLoggedInUserSession = async (): Promise<Session> => {
+export const protectedSession = async (): Promise<Session> => {
   const session = await auth();
   if (!session) return redirect("/login");
 
   return session;
 };
 
-export const protectedUserRoleSession = async (): Promise<Session> => {
+export const protectedUserSession = async (): Promise<Session> => {
   const session = await auth();
   if (!session) return redirect("/login");
 
@@ -19,7 +19,7 @@ export const protectedUserRoleSession = async (): Promise<Session> => {
   return session;
 };
 
-export const protectedAdminRoleSession = async (): Promise<Session> => {
+export const protectedAdminSession = async (): Promise<Session> => {
   const session = await auth();
   if (!session) return redirect("/login");
 

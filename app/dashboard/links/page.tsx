@@ -4,16 +4,9 @@ import NotFound from "@/components/NotFound";
 import ShareButton from "@/components/ShareButton";
 import { Button } from "@/components/ui/button";
 import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
-import { protectedUserRoleSession } from "@/lib/authProtected";
+import { protectedUserSession } from "@/lib/authProtected";
 import prisma from "@/lib/prisma";
-import {
-  Calendar,
-  ChartNoAxesColumn,
-  CopyIcon,
-  ImageIcon,
-  LinkIcon,
-  Share,
-} from "lucide-react";
+import { Calendar, ChartNoAxesColumn, ImageIcon, LinkIcon } from "lucide-react";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,7 +16,7 @@ interface PageProps {
 }
 
 async function Links({ searchParams }: PageProps) {
-  const session = await protectedUserRoleSession();
+  const session = await protectedUserSession();
 
   const header = await headers();
 

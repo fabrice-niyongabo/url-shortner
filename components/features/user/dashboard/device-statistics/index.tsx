@@ -1,7 +1,7 @@
-import { protectedLoggedInUserSession } from "@/lib/authProtected";
 import prisma from "@/lib/prisma";
 import React from "react";
 import { DevicesPieChart } from "./DevicesPieChart";
+import { protectedUserSession } from "@/lib/authProtected";
 
 export interface IChartData {
   device: string;
@@ -10,7 +10,7 @@ export interface IChartData {
 }
 
 async function DeviceStatistics() {
-  const session = await protectedLoggedInUserSession();
+  const session = await protectedUserSession();
   const deviceStats = await prisma.clicks.groupBy({
     by: ["device"],
     where: {

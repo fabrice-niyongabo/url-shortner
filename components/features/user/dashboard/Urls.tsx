@@ -1,10 +1,10 @@
-import { protectedLoggedInUserSession } from "@/lib/authProtected";
+import { protectedUserSession } from "@/lib/authProtected";
 import { minifyNumber } from "@/lib/helpers";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 
 async function Urls() {
-  const session = await protectedLoggedInUserSession();
+  const session = await protectedUserSession();
   const clicksCount = await prisma.url.count({
     where: {
       userId: session.user.id,
