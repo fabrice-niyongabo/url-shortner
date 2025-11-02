@@ -26,7 +26,7 @@ export function DevicesPieChart({ chartData }: IProps) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[250px]"
+      className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[300px]"
     >
       <PieChart>
         <ChartTooltip content={<ChartTooltipContent nameKey="device" />} />
