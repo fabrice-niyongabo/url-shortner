@@ -19,7 +19,7 @@ function Header({ dateRange, setDateRange, fetchData }: IProps) {
 
   return (
     <div className="flex items-center justify-between gap-5">
-      <h1 className="text-2xl font-bold line-clamp-1">Engagement over time</h1>
+      <h1 className="text-2xl font-bold line-clamp-1">Users Engagement</h1>
       <div>
         <Popover onOpenChange={handleOpenChange}>
           <PopoverTrigger asChild>

@@ -2,12 +2,13 @@ import Clicks from "./Clicks";
 import DeviceStatistics from "./device-statistics";
 import Engagement from "./engagement";
 import Urls from "./Urls";
+import Users from "./Users";
 
 function AdminDashboard() {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-        <div className="md:col-span-2"></div>
+        <Users />
         <Clicks />
         <Urls />
       </div>
