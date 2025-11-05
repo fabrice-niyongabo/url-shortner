@@ -3,10 +3,10 @@ import Container from "@/components/container";
 import PageHeader from "@/components/dashboard/PageHeader";
 import ChangePassword from "@/components/features/profile/ChangePassword";
 import PersonalInfo from "@/components/features/profile/PersonalInfo";
-import { protectedUserSession } from "@/lib/authProtected";
+import { protectedSession } from "@/lib/authProtected";
 
 async function Profile() {
-  const session = await protectedUserSession();
+  const session = await protectedSession();
   return (
     <Container>
       <PageHeader title="My Profile">

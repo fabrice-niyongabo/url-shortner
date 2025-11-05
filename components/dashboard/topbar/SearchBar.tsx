@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { Loader2Icon, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ISearchResult {
   id: number;

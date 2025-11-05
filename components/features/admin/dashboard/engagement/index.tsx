@@ -1,0 +1,69 @@
+"use client";
+
+import { returnAxiosErrorMesssage, toastMessage } from "@/lib/helpers";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { DateRange } from "react-day-picker";
+import { IClicksPerDay } from "@/types/statistics";
+import Header from "./Header";
+import Statistics from "./Statistics";
+
+const emptyStatistics: IClicksPerDay[] = [
+  {
+    count: 0,
+    date: "May",
+  },
+  {
+    count: 0,
+    date: "June",
+  },
+  {
+    count: 0,
+    date: "July",
+  },
+];
+
+function Engagement() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  const [statistics, setStatistics] =
+    useState<IClicksPerDay[]>(emptyStatistics);
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const startDate = `${dateRange?.from?.getFullYear()}-${dateRange?.from?.getMonth()}-${dateRange?.from?.getDate()}`;
+      const endDate = `${dateRange?.to?.getFullYear()}-${dateRange?.to?.getMonth()}-${dateRange?.to?.getDate()}`;
+      const url =
+        dateRange?.from && dateRange?.to
+          ? `/api/user/dashboard/statistics?startDate=${startDate}&endDate=${endDate}`
+          : "/api/user/dashboard/statistics";
+      const res = await axios.get(url);
+      setStatistics(
+        res.data.statistics.length ? res.data.statistics : emptyStatistics
+      );
+    } catch (error) {
+      const errorMessage = returnAxiosErrorMesssage(error);
+      toastMessage("error", errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (
+    <div className="bg-white rounded-md p-10">
+      <Header
+        setDateRange={setDateRange}
+        dateRange={dateRange}
+        fetchData={fetchData}
+      />
+      <Statistics isLoading={isLoading} statistics={statistics} />
+    </div>
+  );
+}
+
+export default Engagement;

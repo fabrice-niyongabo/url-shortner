@@ -36,8 +36,8 @@ function Login() {
     toast.promise(promise, {
       loading: "Logging in...",
       success: (res) => {
-        setIsSubmitting(false);
         if (res?.error) {
+          setIsSubmitting(false);
           throw new Error("Wrong username or password.");
         }
         router.push("/dashboard");
