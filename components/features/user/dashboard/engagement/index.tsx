@@ -52,8 +52,8 @@ function Engagement() {
       const endDate = `${dateRange?.to?.getFullYear()}-${dateRange?.to?.getMonth()}-${dateRange?.to?.getDate()}`;
       const url =
         dateRange?.from && dateRange?.to
-          ? `/api/user/dashboard/statistics?startDate=${startDate}&endDate=${endDate}`
-          : "/api/user/dashboard/statistics";
+          ? `/api/dashboard/statistics?startDate=${startDate}&endDate=${endDate}`
+          : "/api/dashboard/statistics";
       const res = await axios.get(url);
       setStatistics(
         res.data.statistics.length ? res.data.statistics : emptyStatistics
