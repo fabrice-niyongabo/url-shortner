@@ -26,7 +26,7 @@ async function Users({ searchParams }: PageProps) {
     },
     include: {
       _count: {
-        select: { urls: true }, // select the count of clicks
+        select: { urls: true },
       },
     },
     orderBy: {

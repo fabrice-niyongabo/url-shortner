@@ -1,5 +1,12 @@
 import SidebarItem from "./SidebarItem";
-import { Home, Kayak, Link, User, UsersRound } from "lucide-react";
+import {
+  DollarSignIcon,
+  Home,
+  Kayak,
+  Link,
+  User,
+  UsersRound,
+} from "lucide-react";
 import { Session } from "next-auth";
 import NextLink from "next/link";
 import { ComponentType } from "react";
@@ -22,6 +29,11 @@ function DashboardSidebar({ session }: IProps) {
             label: "Dashboard",
             icon: Home,
             href: "/dashboard",
+          },
+          {
+            label: "Pricing",
+            icon: DollarSignIcon,
+            href: "/dashboard/pricing",
           },
           {
             label: "Users",
