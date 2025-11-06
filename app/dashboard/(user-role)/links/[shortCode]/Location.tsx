@@ -37,15 +37,17 @@ async function Location({ urlId }: IProps) {
               key={item.id}
               className="flex justify-between items-center gap-2 mb-2"
             >
-              <p className="w-[80px]">{item.country}</p>
+              <p className="w-[80px] text-sm">{item.country}</p>
               <div className="flex-1 relative h-[10px] rounded-full bg-gray-300">
                 <div
                   className="h-full bg-blue-600 transition-all duration-700 rounded-full"
                   style={{ width: `${item.percentage}%` }}
                 ></div>
               </div>
-              <span className="text-right">{minifyNumber(item.clicks)}</span>
-              <span className="font-semibold text-right">
+              <span className="text-right text-sm">
+                {minifyNumber(item.clicks)}
+              </span>
+              <span className="font-semibold text-right text-sm">
                 {item.percentage}%
               </span>
             </div>
