@@ -50,7 +50,7 @@ async function Users({ searchParams }: PageProps) {
         {users.length === 0 ? (
           <NotFound title="No users found" />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="w-full overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr>
@@ -71,7 +71,7 @@ async function Users({ searchParams }: PageProps) {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id} className="text-xs odd:bg-gray-50">
+                  <tr key={user.id} className="text-sm odd:bg-gray-50">
                     <td>
                       {user?.image && (
                         <Image

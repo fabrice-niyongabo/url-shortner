@@ -1,4 +1,5 @@
 import Clicks from "./Clicks";
+import Countries from "./Countries";
 import DeviceStatistics from "./device-statistics";
 import Engagement from "./engagement";
 import Urls from "./Urls";
@@ -19,6 +20,9 @@ function AdminDashboard() {
         <div>
           <DeviceStatistics />
         </div>
+      </div>
+      <div className="mt-5">
+        <Countries />
       </div>
     </div>
   );

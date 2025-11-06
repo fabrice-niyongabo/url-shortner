@@ -6,8 +6,8 @@ import Link from "next/link";
 async function Users() {
   const usersCount = await prisma.user.count({ where: { role: "USER" } });
   return (
-    <Link href="/dashboard/users" className="block hover:opacity-90 h-full">
-      <div className="bg-white p-5 rounded-md">
+    <Link href="/dashboard/users" className="block h-full">
+      <div className="bg-white p-5 rounded-md hover:bg-gray-300">
         <p className="text-lg font-semibold flex gap-2 items-center">
           <Users2 /> <span>Users</span>
         </p>
