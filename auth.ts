@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./lib/prisma";
@@ -10,6 +11,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt", // force JWT so middleware can read it
   },
   providers: [
+    Google,
     Credentials({
       name: "Credentials",
       credentials: {

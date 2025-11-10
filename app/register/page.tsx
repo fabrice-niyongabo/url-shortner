@@ -1,14 +1,17 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import CustomButton from "@/components/ui/CustomButton";
 import { Input } from "@/components/ui/input";
 import { returnAxiosErrorMesssage, toastMessage } from "@/lib/helpers";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
+import { BsGoogle } from "react-icons/bs";
 
 function Register() {
   const router = useRouter();
@@ -64,6 +67,21 @@ function Register() {
               Login
             </Link>
           </p>
+
+          <Button
+            variant="ghost"
+            className="border py-1 px-3 flex items-center justify-center gap-3 my-5 w-full hover:cursor-pointer"
+            onClick={() => signIn("google")}
+          >
+            <BsGoogle /> <span>Continue with Google</span>
+          </Button>
+
+          <div className="flex items-center w-full">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <span className="px-3 text-gray-600 text-sm">OR</span>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
+
           <form className="mt-5 flex flex-col gap-3" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-1">
               <label htmlFor="name" className="text-xs font-semibold">
